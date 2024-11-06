@@ -3,7 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ email: '', password: '', name: '' });
+  const [formData, setFormData] = useState({
+    emailid: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    phoneno: '',
+  });
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -14,11 +20,22 @@ function LoginSignup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Log formData to check if email and password are correctly stored
+    // Log formData to check if data is correctly stored
     console.log('Form Data:', formData);
 
     // Select endpoint based on login or signup action
-    const endpoint = isLogin ? '/api/login' : '/api/signup';
+    const endpoint = isLogin ? 'http://localhost:2000/auth/login' : 'http://localhost:2000/auth/signup';
+    
+    // If it's signup, ensure the form data includes all required fields for signup
+    const bodyData = isLogin
+      ? { emailid: formData.emailid, password: formData.password }
+      : {
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          phoneno: formData.phoneno,
+          emailid: formData.emailid,
+          password: formData.password,
+        };
 
     try {
       const response = await fetch(endpoint, {
@@ -26,7 +43,7 @@ function LoginSignup() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData), // Convert form data to JSON format
+        body: JSON.stringify(bodyData), // Send the appropriate data based on login/signup
       });
 
       if (!response.ok) {
@@ -46,21 +63,43 @@ function LoginSignup() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
       <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
+        {/* Show additional input fields for signup */}
         {!isLogin && (
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleInputChange}
-            style={{ marginBottom: '10px', padding: '8px' }}
-          />
+          <>
+            <input
+              type="text"
+              name="firstname"
+              placeholder="First Name"
+              value={formData.firstname}
+              onChange={handleInputChange}
+              style={{ marginBottom: '10px', padding: '8px' }}
+              required
+            />
+            <input
+              type="text"
+              name="lastname"
+              placeholder="Last Name"
+              value={formData.lastname}
+              onChange={handleInputChange}
+              style={{ marginBottom: '10px', padding: '8px' }}
+              required
+            />
+            <input
+              type="text"
+              name="phoneno"
+              placeholder="Phone Number"
+              value={formData.phoneno}
+              onChange={handleInputChange}
+              style={{ marginBottom: '10px', padding: '8px' }}
+              required
+            />
+          </>
         )}
         <input
           type="email"
-          name="email"
+          name="emailid"
           placeholder="Email"
-          value={formData.email}
+          value={formData.emailid}
           onChange={handleInputChange}
           style={{ marginBottom: '10px', padding: '8px' }}
           required

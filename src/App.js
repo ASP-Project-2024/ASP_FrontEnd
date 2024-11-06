@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import LoginSignup from './LoginSignUp';
-import Home from './Home';
-import Navbar from './Navbar'; // Import Navbar component
+import LoginSignup from './components/LoginSignUp';
+import Home from './components/Home';
+import Navbar from './components/Navbar'; // Import Navbar component
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
