@@ -1,19 +1,23 @@
-// Navbar.js
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-function Navbar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+function Navbar({ startRecording, stopRecording, isRecording }) {
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isRecordDropdownOpen, setIsRecordDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  };
+
+  const toggleRecordDropdown = () => {
+    setIsRecordDropdownOpen(!isRecordDropdownOpen);
   };
 
   const handleLoginClick = () => {
-    setIsDropdownOpen(false); // Close the dropdown before navigating
-    navigate('/loginSignUp'); // Redirect to the LoginSignUp page
+    setIsProfileDropdownOpen(false);
+    navigate('/loginSignUp');
   };
 
   return (
@@ -24,10 +28,21 @@ function Navbar() {
         </li>
         <li className="navItem">
           <div className="dropdown">
-            <button className="dropbtn" onClick={toggleDropdown}>Profile</button>
-            {isDropdownOpen && (
+            <button className="dropbtn" onClick={toggleProfileDropdown}>Profile</button>
+            {isProfileDropdownOpen && (
               <div className="dropdownContent">
                 <button onClick={handleLoginClick} className="dropdownContentLink">Login</button>
+              </div>
+            )}
+          </div>
+        </li>
+        <li className="navItem">
+          <div className="dropdown">
+            <button className="dropbtn" onClick={toggleRecordDropdown}>Record</button>
+            {isRecordDropdownOpen && (
+              <div className="dropdownContent">
+                <button onClick={startRecording} disabled={isRecording} className="dropdownContentLink">Start Recording</button>
+                <button onClick={stopRecording} disabled={!isRecording} className="dropdownContentLink">Stop Recording</button>
               </div>
             )}
           </div>
