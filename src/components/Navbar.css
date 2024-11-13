@@ -1,54 +1,58 @@
+/* Navbar Container */
 .navbar {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-    background-color: #333;
-  }
-  
-  .navList {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navItem {
-    position: relative;
-    margin-left: 1.5rem;
-  }
-  
-  .navLink {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-  }
-  
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropbtn {
-    background: none;
-    color: white;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .dropdownContent {
-    display: block;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  .dropdownContentLink {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #333;
+  color: white;
+}
+
+/* Logo */
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Links */
+.navbar-links {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  gap: 1rem;
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background-color: #333;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.navbar-links.open {
+  display: flex; /* Show when open class is added */
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbar-links a:hover {
+  color: #ddd;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  transition: 0.3s;
+}

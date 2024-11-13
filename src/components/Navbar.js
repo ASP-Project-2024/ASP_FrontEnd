@@ -1,53 +1,28 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import './Navbar.css';
 
-function Navbar({ startRecording, stopRecording, isRecording }) {
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [isRecordDropdownOpen, setIsRecordDropdownOpen] = useState(false);
-  const navigate = useNavigate();
+function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleProfileDropdown = () => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
-  };
-
-  const toggleRecordDropdown = () => {
-    setIsRecordDropdownOpen(!isRecordDropdownOpen);
-  };
-
-  const handleLoginClick = () => {
-    setIsProfileDropdownOpen(false);
-    navigate('/loginSignUp');
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
     <nav className="navbar">
-      <ul className="navList">
-        <li className="navItem">
-          <Link to="/" className="navLink">Home</Link>
-        </li>
-        <li className="navItem">
-          <div className="dropdown">
-            <button className="dropbtn" onClick={toggleProfileDropdown}>Profile</button>
-            {isProfileDropdownOpen && (
-              <div className="dropdownContent">
-                <button onClick={handleLoginClick} className="dropdownContentLink">Login</button>
-              </div>
-            )}
-          </div>
-        </li>
-        <li className="navItem">
-          <div className="dropdown">
-            <button className="dropbtn" onClick={toggleRecordDropdown}>Record</button>
-            {isRecordDropdownOpen && (
-              <div className="dropdownContent">
-                <button onClick={startRecording} disabled={isRecording} className="dropdownContentLink">Start Recording</button>
-                <button onClick={stopRecording} disabled={!isRecording} className="dropdownContentLink">Stop Recording</button>
-              </div>
-            )}
-          </div>
-        </li>
-      </ul>
+      {/* Logo that redirects to the home page */}
+      <Link to="/" className="navbar-logo">ASP Project</Link>
+      <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
+      <Link to="/profile">Profile</Link>
+        <Link to="/loginSignUp">Login</Link>
+        <Link to="/record">Record</Link>
+      </div>
+      <div className="hamburger" onClick={toggleMenu}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </nav>
   );
 }

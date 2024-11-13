@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode'; // Correctly import default export
 
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true);
@@ -42,50 +43,54 @@ function LoginSignup() {
         body: JSON.stringify(bodyData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         navigate('/home');
       } else {
-        const errorData = await response.json();
-        console.error('Error:', errorData.message || 'Failed to submit');
+        console.error('Error:', data.error || 'Failed to submit');
+        alert(data.error || 'Submission failed. Please try again.');
       }
     } catch (error) {
       console.error('Network error:', error.message);
     }
   };
 
-  // Google Login function
-  const googleLogin = async (tokenResponse) => {
+  const googleLogin = async (credentialResponse) => {
     try {
-      const userInfo = await fetch(
-        'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,phoneNumbers',
-        {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-          },
-        }
-      );
-      const data = await userInfo.json();
+      const { credential } = credentialResponse;
+      const decoded = jwtDecode(credential);
 
-      console.log('User Info from Google:', data);
+      // Extract user information from the token
+      const firstname = decoded.given_name;
+      const lastname = decoded.family_name;
+      const emailid = decoded.email;
 
-      // You can extract the required information from the data
-      const { givenName, familyName, phoneNumbers, emailAddresses } = data;
-      const phoneNumber = phoneNumbers && phoneNumbers[0]?.value; // Get phone number if available
-      const email = emailAddresses && emailAddresses[0]?.value; // Get email address if available
+      // Backend endpoint for Google authentication
+      const endpoint = isLogin
+        ? 'http://localhost:2000/auth/google-login'
+        : 'http://localhost:2000/auth/google-signup';
 
-      // Set data in the formData state
-      setFormData({
-        ...formData,
-        firstname: givenName,
-        lastname: familyName,
-        phoneno: phoneNumber || '',
-        emailid: email || '',
+      // Send extracted data to the backend
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ emailid, firstname, lastname }),
       });
 
-      // Optionally, navigate to home or profile page
-      navigate('/home');
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Google authentication successful:', data);
+        navigate('/home');
+      } else {
+        console.error('Error:', data.error || 'Failed to authenticate with Google');
+        alert(data.error || 'Google authentication failed. Please try again.');
+      }
     } catch (error) {
-      console.error('Error fetching Google user data:', error.message);
+      console.error('Error decoding Google token or backend error:', error.message);
     }
   };
 
@@ -158,12 +163,11 @@ function LoginSignup() {
         {/* Google Sign-In Button */}
         <GoogleLogin
           onSuccess={googleLogin}
-          onError={(error) => console.error("Google login error", error)}
-          useOneTap
+          onError={() => console.error('Google login error')}
         />
       </div>
     </GoogleOAuthProvider>
   );
 }
 
-export default LoginSignup;
+export default LoginSignup;

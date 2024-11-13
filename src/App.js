@@ -6,47 +6,22 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import LoginSignup from './components/LoginSignUp';
 import './App.css';
+import Profile from './components/Profile';
+import Record from './components/Record';
 
 function App() {
-  const [isRecording, setIsRecording] = useState(false);
-  const mediaRecorderRef = useRef(null);
-  const audioChunks = useRef([]);
-
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunks.current.push(event.data);
-        }
-      };
-      
-      mediaRecorderRef.current.start();
-      setIsRecording(true);
-    } catch (err) {
-      console.error('Error accessing microphone:', err);
-    }
-  };
-
-  const stopRecording = () => {
-    mediaRecorderRef.current.stop();
-    setIsRecording(false);
-  };
-
   return (
    <GoogleOAuthProvider>
     <AuthProvider>
     <Router>
-      <div>
-        <Navbar startRecording={startRecording} stopRecording={stopRecording} isRecording={isRecording} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/loginSignUp" element={<LoginSignup />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/loginSignUp" element={<LoginSignup />} /> {/* Route for Login/Signup */}
+        <Route path="/profile" element={<Profile />} /> {/* Route for Login/Signup */}
+        <Route path="/record" element={<Record />} /> {/* Route for Login/Signup */}
+        <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to home for undefined paths */}
+      </Routes>
     </Router>
     </AuthProvider>
    </GoogleOAuthProvider>
