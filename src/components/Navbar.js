@@ -1,38 +1,28 @@
-// Navbar.js
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import './Navbar.css';
 
 function Navbar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleLoginClick = () => {
-    setIsDropdownOpen(false); // Close the dropdown before navigating
-    navigate('/loginSignUp'); // Redirect to the LoginSignUp page
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
     <nav className="navbar">
-      <ul className="navList">
-        <li className="navItem">
-          <Link to="/" className="navLink">Home</Link>
-        </li>
-        <li className="navItem">
-          <div className="dropdown">
-            <button className="dropbtn" onClick={toggleDropdown}>Profile</button>
-            {isDropdownOpen && (
-              <div className="dropdownContent">
-                <button onClick={handleLoginClick} className="dropdownContentLink">Login</button>
-              </div>
-            )}
-          </div>
-        </li>
-      </ul>
+      {/* Logo that redirects to the home page */}
+      <Link to="/" className="navbar-logo">ASP Project</Link>
+      <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
+      <Link to="/profile">Profile</Link>
+        <Link to="/loginSignUp">Login</Link>
+        <Link to="/record">Record</Link>
+      </div>
+      <div className="hamburger" onClick={toggleMenu}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </nav>
   );
 }

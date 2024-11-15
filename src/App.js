@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-import LoginSignup from './components/LoginSignUp';
-import Home from './components/Home';
-import Navbar from './components/Navbar'; // Import Navbar component
-import AudioRecorder from './components/AudioRecorder';
+import React, { useState, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import LoginSignup from './components/LoginSignUp';
+import './App.css';
+import Profile from './components/Profile';
+import Record from './components/Record';
 
 function App() {
   return (
+   <GoogleOAuthProvider>
+    <AuthProvider>
     <Router>
-      <div>
-        <Navbar /> {/* Add Navbar here to make it available on every page */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/loginSignUp" element={<LoginSignup />} />
-          <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/audio" element={<AudioRecorder />} />
-        </Routes>
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/loginSignUp" element={<LoginSignup />} /> {/* Route for Login/Signup */}
+        <Route path="/profile" element={<Profile />} /> {/* Route for Login/Signup */}
+        <Route path="/record" element={<Record />} /> {/* Route for Login/Signup */}
+        <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to home for undefined paths */}
+      </Routes>
     </Router>
+    </AuthProvider>
+   </GoogleOAuthProvider>
+    
   );
 }
 

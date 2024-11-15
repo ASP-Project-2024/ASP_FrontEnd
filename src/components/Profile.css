@@ -1,0 +1,41 @@
+/* Centering the profile container horizontally */
+.profile-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;  /* Horizontally center the container */
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* This will center the content horizontally */
+}
+
+/* Profile info layout */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;  /* Increase gap between rows */
+  align-items: center;  /* This centers each row (name, email, phone) horizontally */
+  text-align: left;  /* Align text to the left inside each row */
+}
+
+.name-row,
+.email-row,
+.phone-row {
+  font-size: 24px;  /* Increase font size */
+}
+
+button.logout-btn {
+  padding: 15px 25px;  /* Increase padding to make the button bigger */
+  font-size: 18px;  /* Increase the font size of the button text */
+  background-color: #459F49;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  align-self: center;  /* This ensures the button is centered horizontally */
+}
+
+button.logout-btn:hover {
+  background-color: #ff1a1a;
+}
