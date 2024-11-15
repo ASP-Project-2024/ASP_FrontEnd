@@ -37,7 +37,7 @@ function Profile() {
   // Handle logout
   const handleLogout = async () => {
     try {
-      const response = await fetch('/auth/logout', {
+      const response = await fetch('http://localhost:2000/auth/logout', {
         method: 'GET',
         credentials: 'include', 
       });
