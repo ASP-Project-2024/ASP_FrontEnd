@@ -14,12 +14,22 @@ function App() {
    <GoogleOAuthProvider>
     <AuthProvider>
     <Router>
-      <Navbar />
+   
       <Routes>
         <Route path="/" element={<LoginSignup />} />
-        <Route path="/home" element={<Home />} /> {/* Route for Login/Signup */}
-        <Route path="/profile" element={<Profile />} /> {/* Route for Login/Signup */}
-        <Route path="/record" element={<Record />} /> {/* Route for Login/Signup */}
+        <Route path="/home" element={<>
+        <Navbar />
+        <Home />
+        </>
+        } /> {/* Route for Login/Signup */}
+        <Route path="/profile" element={<> 
+        <Navbar/>
+        <Profile />
+        </>} /> {/* Route for Login/Signup */}
+        <Route path="/record" element={<>
+        <Navbar />
+        <Record />
+        </>} /> {/* Route for Login/Signup */}
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to home for undefined paths */}
       </Routes>
     </Router>
