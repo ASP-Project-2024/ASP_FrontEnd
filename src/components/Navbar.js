@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       {/* Logo that redirects to the home page */}
-      <Link to="/" className="navbar-logo">ASP Project</Link>
+      <Link to="/" className="navbar-logo">InterviewPrep</Link>
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
       <Link to="/profile">Profile</Link>
         <Link to="/loginSignUp">Login</Link>
