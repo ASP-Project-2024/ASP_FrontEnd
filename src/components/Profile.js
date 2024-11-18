@@ -5,84 +5,67 @@ import './Profile.css';
 function Profile() {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
-    firstname: '',
-    lastname: '',
-    emailid: '',
-    phoneno: '',
-    auth_method: '', // Added auth_method
+    firstname: 'firstname', // Placeholder for testing
+    lastname: 'lastname', // Placeholder for testing
+    emailid: 'emailid@emailid.com', // Placeholder for testing
+    phoneno: '123-456-7890', // Placeholder for testing
+    applicationNumber: 'APP12345', // Placeholder for testing
+    auth_method: 'email', // Placeholder for testing
   });
 
-  // Fetch profile data
-  const fetchProfile = async () => {
-    try {
-      const response = await fetch('http://localhost:2000/auth/profile', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setProfileData(data.profile);
-      } else {
-        console.error('Failed to fetch profile data');
-      }
-    } catch (error) {
-      console.error('Error fetching profile data:', error);
-    }
-  };
-
-  // Handle logout
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('http://localhost:2000/auth/logout', {
-        method: 'GET',
-        credentials: 'include', 
-      });
-  
-      if (response.ok) {
-        console.log('Logged out successfully');
-        navigate('/login'); // Redirect to login page
-      } else {
-        console.error('Logout failed');
-      }
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-  };
-
-  // Use useEffect to fetch profile data on component mount
   useEffect(() => {
+    // Uncomment and configure the API request when it's available
+    /*
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('http://localhost:2000/auth/profile', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProfileData(data.profile);
+        } else {
+          console.error('Failed to fetch profile data');
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    };
+
     fetchProfile();
+    */
   }, []);
 
   return (
     <div className="profile-container">
-      <h1>Profile Page</h1>
-
-      <div className="profile-info">
-        <div className="name-row">
-          <span>First Name: {profileData.firstname}</span>
+      {/* Profile Picture */}
+      <div className="profile-header">
+        <div className="profile-picture">
+          <img
+            className="profile-img"
+            src="https://via.placeholder.com/150"
+            alt="Profile"
+          />
         </div>
+      </div>
 
-        <div className="name-row">
-          <span>Last Name: {profileData.lastname}</span>
+      {/* Profile Info */}
+      <div className="profile-details">
+        <h1 className="welcome-message">Welcome,</h1>
+        <h2 className="name">{profileData.firstname} {profileData.lastname}</h2>
+        <div className="bio">
+          <p><strong>Email Id :</strong> {profileData.emailid}</p>
+          <p><strong>Phone:</strong> {profileData.phoneno}</p>
+          <p><strong>Application Number:</strong> {profileData.applicationNumber}</p>
         </div>
-
-        <div className="email-row">
-          <span>Email: {profileData.emailid}</span>
-        </div>
-
-        {/* Conditionally render phone based on auth_method */}
-        {profileData.auth_method !== 'google' && (
-          <div className="phone-row">
-            <span>Phone: {profileData.phoneno}</span>
-          </div>
-        )}
-
-        <button className="logout-btn" onClick={handleLogout}>
+        {/* Logout Button below application number */}
+        <button
+          className="logout-btn"
+          onClick={() => navigate('/logout')}
+        >
           Logout
         </button>
       </div>
