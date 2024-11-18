@@ -1,41 +1,78 @@
-/* Centering the profile container horizontally */
+/* General Container */
 .profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;  /* Horizontally center the container */
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* This will center the content horizontally */
+  background-color: #f4f7fa;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Profile info layout */
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;  /* Increase gap between rows */
-  align-items: center;  /* This centers each row (name, email, phone) horizontally */
-  text-align: left;  /* Align text to the left inside each row */
+/* Profile Header Section */
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.name-row,
-.email-row,
-.phone-row {
-  font-size: 24px;  /* Increase font size */
+/* Profile Picture */
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
-button.logout-btn {
-  padding: 15px 25px;  /* Increase padding to make the button bigger */
-  font-size: 18px;  /* Increase the font size of the button text */
-  background-color: #459F49;
-  color: white;
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Info */
+.profile-details {
+  text-align: center;
+  width: 100%;
+}
+
+.welcome-message {
+  font-size: 40px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: normal;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.bio {
+  font-size: 16px;
+  color: #555;
+}
+
+.bio p {
+  margin: 5px 0;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
-  margin-top: 20px;
-  align-self: center;  /* This ensures the button is centered horizontally */
+  cursor: pointer;
+  margin-top: 200px;
+  transition: background-color 0.3s ease;
 }
 
-button.logout-btn:hover {
-  background-color: #ff1a1a;
+.logout-btn:hover {
+  background-color: #0056b3;
 }
