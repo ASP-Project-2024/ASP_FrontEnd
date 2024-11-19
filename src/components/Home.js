@@ -1,10 +1,10 @@
 import React from 'react';
 import './Home.css';
-
+import CodeEditor from './CodeEditor';
 function Home() {
   return (
     <div className="home-container">
-      <h1 className="home-header">Welcome</h1>
+      <CodeEditor></CodeEditor>
     </div>
   );
 }

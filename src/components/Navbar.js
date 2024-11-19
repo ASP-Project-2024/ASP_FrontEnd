@@ -8,17 +8,20 @@ function Navbar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const closeMenu = () => {
+    setIsOpen(false); // Close the menu
+  };
 
   return (
     <nav className="navbar">
       {/* Logo that redirects to the home page */}
-      <Link to="/" className="navbar-logo">ASP Project</Link>
+      <Link to="/" className="navbar-logo" onClick={closeMenu}>ASP Project</Link>
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
-      <Link to="/profile">Profile</Link>
-        <Link to="/loginSignUp">Login</Link>
-        <Link to="/record">Record</Link>
+      <Link to="/profile" onClick={closeMenu}>Profile</Link>
+        <Link to="/loginSignUp" onClick={closeMenu}>Login</Link>
+        <Link to="/record" onClick={closeMenu}>Record</Link>
       </div>
-      <div className="hamburger" onClick={toggleMenu}>
+      <div className="hamburger" onClick={toggleMenu} >
         <span></span>
         <span></span>
         <span></span>

@@ -1,11 +1,15 @@
 .home-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full viewport height */
+  min-height: 100vh;      /* Equivalent to minH="100vh" */
+  background-color: #0f0a19; /* Equivalent to bg="#0f0a19" */
+  color: #a0aec0;         /* Equivalent to color="gray.500" */
+  padding-left: 1.5rem;   /* Equivalent to px={6} */
+  padding-right: 1.5rem;
+  padding-top: 2rem;      /* Equivalent to py={8} */
+  padding-bottom: 2rem;
 }
 
 .home-header {
-  font-size: 3rem; /* Adjust size as needed */
+  font-size: 1rem; /* Adjust size as needed */
   text-align: center;
+  text-decoration-color: rgb(54, 46, 46);
 }

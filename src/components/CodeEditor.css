@@ -1,0 +1,47 @@
+
+
+/* Ensure root elements occupy the full screen */
+html, body {
+    height: 100%; /* Full height for the entire document */
+    margin: 0; /* Remove any default margins */
+    padding: 0; /* Remove any default padding */
+    box-sizing: border-box; /* Include padding and border in size calculations */
+    overflow: hidden; /* Prevent overflow causing white space */
+  }
+  
+  .code-editor-wrapper {
+    display: flex; /* Use flexbox to align children side by side */
+    width: 100vw; /* Full width of the screen */
+    height: 80vh; /* Full height of the screen */
+    margin: 0; /* Remove extra margins */
+    padding: 0; /* Remove padding */
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent scrollbars from extra space */
+  }
+  
+  .code-editor-container {
+    width: 50%;
+    height: 80vh; /* Full height */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .language-selector {
+    margin: 0; /* Remove margin */
+    padding: 10px; /* Optional padding for better spacing */
+  }
+  
+  button, .editor-output {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Adjust the output section */
+  .editor-output {
+    flex: 1; /* Allow it to grow to fill available space */
+    max-height: 50%; /* Restrict the height if it gets too large */
+    overflow-y: auto; /* Add scrolling if content overflows */
+  }
+  
