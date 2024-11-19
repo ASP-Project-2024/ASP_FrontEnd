@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px; /* Reduced padding */
+  background: linear-gradient(135deg, #007bff, #4a90e2);
+  min-height: 100vh;
+  color: white;
+}
+
+.title {
+  font-size: 36px; /* Slightly smaller font size */
+  font-weight: bold;
+  margin-bottom: 20px; /* Reduced spacing below title */
+}
+
+.auth-container {
+  background-color: #ffffff;
+  color: #333;
+  padding: 20px; /* Reduced padding inside the container */
+  border-radius: 10px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  margin-top: 50px; /* Reduced spacing above container */
+}
+
+.auth-header {
+  font-size: 20px; /* Reduced font size */
+  margin-bottom: 10px; /* Reduced spacing below header */
+  color: #007bff;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Consistent spacing between input fields */
+}
+
+.auth-input {
+  padding: 10px; /* Slightly smaller padding inside inputs */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px; /* Reduced font size */
+}
+
+.auth-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px; /* Reduced padding for button */
+  border-radius: 5px;
+  font-size: 14px; /* Reduced font size */
+  border: none;
+  cursor: pointer;
+  margin-top: 10px; /* Minimal spacing above button */
+}
+
+.auth-button:hover {
+  background-color: #0056b3;
+}
+
+.toggle-text {
+  margin-top: 10px; /* Reduced spacing above toggle text */
+  font-size: 12px; /* Slightly smaller font size */
+  text-align: center;
+}
+
+.toggle-link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.toggle-link:hover {
+  color: #0056b3;
+}

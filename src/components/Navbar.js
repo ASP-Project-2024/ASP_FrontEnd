@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       {/* Logo that redirects to the home page */}
-      <Link to="/" className="navbar-logo" onClick={closeMenu}>ASP Project</Link>
+      <Link to="/" className="navbar-logo">InterviewPrep</Link>
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
       <Link to="/profile" onClick={closeMenu}>Profile</Link>
         <Link to="/loginSignUp" onClick={closeMenu}>Login</Link>

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode'; // Correctly import default export
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import {jwtDecode} from 'jwt-decode'; // Correct import
+import Swal from 'sweetalert2';
+import './LoginSignup.css'; // External CSS file for styling
 
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true);
+  const [udata, setUdata] = useState();
   const [formData, setFormData] = useState({
     emailid: '',
     password: '',
@@ -13,18 +15,68 @@ function LoginSignup() {
     lastname: '',
     phoneno: '',
   });
+
   const navigate = useNavigate();
+
+  const profile = async () => {
+    try {
+      const response = await fetch('http://localhost:2000/auth/profile', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUdata(data.profile);
+        if (data.profile) {
+          navigate('/home');
+        }
+      } else {
+        console.error('Failed to fetch profile data');
+      }
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
+
+  useEffect(() => {
+    profile();
+  }, [udata]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateForm = () => {
+    if (!formData.emailid || !formData.password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Input',
+        text: 'Email and Password are required.',
+        confirmButtonText: 'OK',
+      });
+      return false;
+    }
+    if (!isLogin && (!formData.firstname || !formData.lastname || !formData.phoneno)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Incomplete Form',
+        text: 'All fields are required for signup.',
+        confirmButtonText: 'OK',
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
     const endpoint = isLogin ? 'http://localhost:2000/auth/login' : 'http://localhost:2000/auth/signup';
-
     const bodyData = isLogin
       ? { emailid: formData.emailid, password: formData.password }
       : {
@@ -44,33 +96,26 @@ function LoginSignup() {
         body: JSON.stringify(bodyData),
         credentials: 'include',
       });
-
       const data = await response.json();
-
       if (response.ok) {
-        // Success alert
         Swal.fire({
           icon: 'success',
-          title: 'Success!',
-          text: isLogin ? 'Logged in successfully!' : 'Account created successfully!',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          navigate('/home'); // Navigate to home page after success
-        });
+          title: isLogin ? 'Welcome Back!' : 'Account Created',
+          text: isLogin ? `Good to see you again!` : 'You can now log in with your new account.',
+          confirmButtonText: 'Continue',
+        }).then(() => navigate('/home'));
       } else {
-        // Error alert
         Swal.fire({
           icon: 'error',
-          title: 'Error!',
+          title: 'Authentication Failed',
           text: data.error || 'Something went wrong. Please try again.',
           confirmButtonText: 'OK',
         });
       }
     } catch (error) {
-      // Network error alert
       Swal.fire({
         icon: 'error',
-        title: 'Network Error!',
+        title: 'Network Error',
         text: error.message || 'Please check your connection and try again.',
         confirmButtonText: 'OK',
       });
@@ -82,17 +127,14 @@ function LoginSignup() {
       const { credential } = credentialResponse;
       const decoded = jwtDecode(credential);
 
-      // Extract user information from the token
       const firstname = decoded.given_name;
       const lastname = decoded.family_name;
       const emailid = decoded.email;
 
-      // Backend endpoint for Google authentication
       const endpoint = isLogin
         ? 'http://localhost:2000/auth/google-login'
         : 'http://localhost:2000/auth/google-signup';
 
-      // Send extracted data to the backend
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -103,31 +145,25 @@ function LoginSignup() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        // Success alert for Google login/signup
         Swal.fire({
           icon: 'success',
-          title: 'Success!',
-          text: 'Google authentication successful!',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          navigate('/home'); // Navigate to home page after success
-        });
+          title: 'Google Sign-In Successful',
+          text: `Welcome ${firstname}!`,
+          confirmButtonText: 'Continue',
+        }).then(() => navigate('/home'));
       } else {
-        // Error alert for Google login/signup
         Swal.fire({
           icon: 'error',
-          title: 'Error!',
-          text: data.error || 'Google authentication failed. Please try again.',
+          title: 'Google Authentication Failed',
+          text: data.error || 'Please try again.',
           confirmButtonText: 'OK',
         });
       }
     } catch (error) {
-      // Error alert for decoding or network issues
       Swal.fire({
         icon: 'error',
-        title: 'Error!',
+        title: 'Error',
         text: 'Failed to decode Google credentials or network issue occurred.',
         confirmButtonText: 'OK',
       });
@@ -136,82 +172,82 @@ function LoginSignup() {
 
   return (
     <GoogleOAuthProvider clientId="1075893040673-0ikvhs02rh87i359em7h3sggd79356he.apps.googleusercontent.com">
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
-        <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
-          {!isLogin && (
-            <>
-              <input
-                type="text"
-                name="firstname"
-                placeholder="First Name"
-                value={formData.firstname}
-                onChange={handleInputChange}
-                style={{ marginBottom: '10px', padding: '8px' }}
-                required
-              />
-              <input
-                type="text"
-                name="lastname"
-                placeholder="Last Name"
-                value={formData.lastname}
-                onChange={handleInputChange}
-                style={{ marginBottom: '10px', padding: '8px' }}
-                required
-              />
-              <input
-                type="text"
-                name="phoneno"
-                placeholder="Phone Number"
-                value={formData.phoneno}
-                onChange={handleInputChange}
-                style={{ marginBottom: '10px', padding: '8px' }}
-                required
-              />
-            </>
-          )}
-          <input
-            type="email"
-            name="emailid"
-            placeholder="Email"
-            value={formData.emailid}
-            onChange={handleInputChange}
-            style={{ marginBottom: '10px', padding: '8px' }}
-            required
+      <div className="container">
+        <h1 className="title">InterviewPrep</h1>
+        <div className="auth-container">
+          <h2 className="auth-header">{isLogin ? 'Welcome Back!' : 'Create Your Account'}</h2>
+          <form onSubmit={handleSubmit} className="auth-form">
+            {!isLogin && (
+              <>
+                <input
+                  type="text"
+                  name="firstname"
+                  placeholder="First Name"
+                  value={formData.firstname}
+                  onChange={handleInputChange}
+                  className="auth-input"
+                  required
+                />
+                <input
+                  type="text"
+                  name="lastname"
+                  placeholder="Last Name"
+                  value={formData.lastname}
+                  onChange={handleInputChange}
+                  className="auth-input"
+                  required
+                />
+                <input
+                  type="text"
+                  name="phoneno"
+                  placeholder="Phone Number"
+                  value={formData.phoneno}
+                  onChange={handleInputChange}
+                  className="auth-input"
+                  required
+                />
+              </>
+            )}
+            <input
+              type="email"
+              name="emailid"
+              placeholder="Email"
+              value={formData.emailid}
+              onChange={handleInputChange}
+              className="auth-input"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="auth-input"
+              required
+            />
+            <button type="submit" className="auth-button">
+              {isLogin ? 'Login' : 'Sign Up'}
+            </button>
+          </form>
+          <p className="toggle-text">
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
+            <span className="toggle-link" onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? 'Sign Up' : 'Login'}
+            </span>
+          </p>
+          <GoogleLogin
+            onSuccess={googleLogin}
+            onError={() =>
+              Swal.fire({
+                icon: 'error',
+                title: 'Google Sign-In Failed',
+                text: 'Please try again.',
+                confirmButtonText: 'OK',
+              })
+            }
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange}
-            style={{ marginBottom: '10px', padding: '8px' }}
-            required
-          />
-          <button type="submit" style={{ padding: '10px', marginTop: '10px' }}>
-            {isLogin ? 'Login' : 'Sign Up'}
-          </button>
-        </form>
-
-        <p style={{ marginTop: '20px' }}>
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
-          <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Sign Up' : 'Login'}
-          </span>
-        </p>
-
-        {/* Google Sign-In Button */}
-        <GoogleLogin
-          onSuccess={googleLogin}
-          onError={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error!',
-              text: 'Google login error. Please try again.',
-              confirmButtonText: 'OK',
-            });
-          }}
-        />
+        </div>
       </div>
     </GoogleOAuthProvider>
   );
