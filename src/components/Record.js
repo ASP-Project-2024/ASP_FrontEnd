@@ -1,16 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Record.css';
+import questions from './questions.json';
 
 function Record() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcribedText, setTranscribedText] = useState('');
   const [isSpeechRecognitionSupported, setIsSpeechRecognitionSupported] = useState(true);
   const [waveformVisible, setWaveformVisible] = useState(false);
+  const [timer, setTimer] = useState(20); // Set timer to 20 seconds
+  const [textAreaVisible, setTextAreaVisible] = useState(false); // State to control text area visibility
+  const [testStarted, setTestStarted] = useState(false); // State to track if test has started
   const mediaRecorderRef = useRef(null);
   const audioChunks = useRef([]);
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const [question, setQuestion] = useState('');
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -21,6 +27,62 @@ function Record() {
       setIsSpeechRecognitionSupported(false);
     }
   }, [SpeechRecognition]);
+
+  useEffect(() => {
+    // Set a random question from the imported JSON data
+    if (questions.length > 0) {
+      setRandomQuestion();
+    } else {
+      console.error('No questions found in the JSON file');
+    }
+  }, [])
+
+  // Function to set a random question
+  const setRandomQuestion = () => {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    setCurrentQuestionIndex(randomIndex);
+    setQuestion(questions[randomIndex].question);
+  };
+
+  // Function to handle getting a new random question
+  const handleGetNewRandomQuestion = () => {
+    setRandomQuestion();
+  };
+
+  useEffect(() => {
+    // Set the first question from the imported JSON data
+    if (questions.length > 0) {
+      setQuestion(questions[currentQuestionIndex].question);
+    } else {
+      console.error('No questions found in the JSON file');
+    }
+  }, [currentQuestionIndex]);
+
+  // Function to handle next question
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+
+  // Function to handle previous question
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
+  useEffect(() => {
+    let interval = null;
+    if (timer > 0 && !isRecording) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timer, isRecording]);
 
   const startRecording = async () => {
     if (isRecording) {
@@ -49,6 +111,7 @@ function Record() {
 
       mediaRecorderRef.current.start();
       setIsRecording(true);
+      setTimer(20); // Reset the timer to 20 when recording starts
 
       // Start Speech Recognition if supported
       if (recognition) {
@@ -92,6 +155,7 @@ function Record() {
     mediaRecorderRef.current.stop();
     setIsRecording(false);
     setWaveformVisible(false); // Hide waveform when recording stops
+    setTextAreaVisible(false); // Hide text area when recording stops
 
     if (audioContextRef.current) {
       audioContextRef.current.close();
@@ -182,10 +246,46 @@ function Record() {
     }
   };
 
+  const handleStartTestClick = () => {
+    setTestStarted(true); // Toggle test started state
+    setTextAreaVisible(true); // Show the text area
+  };
+
+  const handleEndTestClick = () => {
+    setTestStarted(false); // End the test
+    setTextAreaVisible(false); // Hide the text area
+  };
+
   return (
     <div className="record-container">
-      <h1>Recording Page</h1>
       {waveformVisible && <canvas id="waveform" width="600" height="200"></canvas>}
+
+      {/* Start Test Button */}
+      {!testStarted && (
+        <div className="round-button-container">
+          <button onClick={handleStartTestClick} className="round-btn">Start Test</button>
+        </div>
+      )}
+
+      {/* End Test Button */}
+      {testStarted && (
+        <div className="round-button-container">
+          <button onClick={handleEndTestClick} className="round-btn">End Test</button>
+        </div>
+      )}
+
+      {/* Text Area */}
+      {textAreaVisible && (
+        <div className="text-area-wrapper">
+          <button className="arrow-btn left" onClick={handlePreviousQuestion}>{'<'}</button>
+          <textarea
+            className="text-area"
+            readOnly
+            value={question}
+          ></textarea>
+          <button className="arrow-btn right" onClick={handleNextQuestion}>{'>'}</button>
+        </div>
+      )}
 
       <div className="buttons-container">
         <button

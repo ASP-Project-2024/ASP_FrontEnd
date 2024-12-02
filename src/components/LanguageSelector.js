@@ -23,6 +23,7 @@ const LanguageSelector = ({ language, onSelect }) => {
                                 setIsOpen(false); // Close the menu after selection
                             }}
                         >
+                            
                             {language.charAt(0).toUpperCase() + language.slice(1)}
                         </li>
                     ))}

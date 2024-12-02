@@ -29,12 +29,12 @@ button {
 }
 
 .start-btn {
-  background-color: #4caf50;
+  background-color: #1f68a8;
   color: #fff;
 }
 
 .stop-btn {
-  background-color: #f44336;
+  background-color: #e3665d;
   color: #fff;
 }
 
@@ -46,4 +46,100 @@ button:disabled {
 .error-text {
   color: #f44336;
   margin-top: 20px;
+}
+
+.round-button-container {
+  display: flex;
+  justify-content: center;
+  /* margin-bottom: 20px; Adds spacing between round button and waveform canvas/buttons */
+}
+
+.round-btn {
+  display: flex; /* Enables flexbox */
+  justify-content: center; /* Centers text horizontally */
+  align-items: center; /* Centers text vertically */
+  width: 70px;
+  height: 70px;
+  border-radius: 50%; /* Makes the button round */
+  background-color: #1677a4; /* Green background */
+  color: #fff; /* White text */
+  border: 2px solid #fff; /* Optional white border */
+  font-size: 18px; /* Larger font size */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-bottom: 20px;
+}
+
+.round-btn:hover {
+  background-color: #2454ba; /* Darker green on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.round-btn:active {
+  background-color: #2454ba; /* Even darker green on click */
+  transform: scale(0.95); /* Slightly shrink on active state */
+}
+
+.text-area-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px; /* Reduced margin-bottom for less space */
+  width: 100%;
+}
+
+.text-area-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px; /* Reduced margin-bottom for less space */
+  width: 80%;
+}
+
+.text-area {
+  width: 80%; /* Set the width of the text area to 80% */
+  height: 10vh;
+  padding: 10px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  background-color: #40687a13;
+  border: 2px solid #293d8c;
+  resize: none;
+  overflow-y: auto;
+  margin: 0 10px; /* Added horizontal margin for better alignment */
+}
+
+/* Arrow Buttons */
+.arrow-btn {
+  background-color: #4224ba;
+  color: #fff;
+  border: 2px solid #624ec9;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1; /* Ensure buttons are on top */
+}
+
+/* Left Arrow Button */
+.arrow-btn.left {
+  left:10px; /* Position to the left of the text area */
+}
+
+/* Right Arrow Button */
+.arrow-btn.right {
+  right: 10px; /* Position to the right of the text area */
+}
+
+/* Arrow button active state */
+.arrow-btn:active {
+  background-color: #3e8e41;
+  transform: scale(0.95);
 }

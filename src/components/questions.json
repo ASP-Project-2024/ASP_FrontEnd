@@ -1,0 +1,352 @@
+[
+    {
+        "id": 1,
+        "category": "Engineering",
+        "question": "Explain basic data structures such as arrays, linked lists, and stacks.",
+        "difficulty": "Intermediate",
+        "type": "Technical"
+    },
+    {
+        "id": 2,
+        "category": "Engineering",
+        "question": "What is the difference between a queue and a stack?",
+        "difficulty": "Beginner",
+        "type": "Technical"
+    },
+    {
+        "id": 3,
+        "category": "Engineering",
+        "question": "Explain the concept of time complexity and its importance in algorithm analysis.",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 4,
+        "category": "Engineering",
+        "question": "What is object-oriented programming (OOP)? Explain the four pillars of OOP.",
+        "difficulty": "Advanced",
+        "type": "Conceptual"
+    },
+    {
+        "id": 5,
+        "category": "Engineering",
+        "question": "Describe the difference between a class and an object in OOP.",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 6,
+        "category": "Engineering",
+        "question": "What is polymorphism, and how is it implemented in programming languages?",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 7,
+        "category": "Engineering",
+        "question": "Explain the concept of inheritance and its benefits in OOP.?",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 8,
+        "category": "Engineering",
+        "question": "Describe the difference between an abstract class and an interface.",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 9,
+        "category": "Engineering",
+        "question": "How does garbage collection work in programming languages like Java or C#?",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 10,
+        "category": "Engineering",
+        "question": "Implement a binary search algorithm.",
+        "difficulty": "Advanced",
+        "type": "Conceptual"
+    },
+    {
+        "id": 11,
+        "category": "Engineering",
+        "question": "What are RESTful APIs, and how do they work?",
+        "difficulty": "Beginner",
+        "type": "Situational"
+    },
+    {
+        "id": 12,
+        "category": "Engineering",
+        "question": "Explain the difference between SQL and NoSQL databases.",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 13,
+        "category": "Engineering",
+        "question": "Describe the principles of SOLID design in object-oriented programming.",
+        "difficulty": "Beginner",
+        "type": "Technical"
+    },
+    {
+        "id": 14,
+        "category": "Engineering",
+        "question": "Explain the difference between synchronous and asynchronous programming.",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 15,
+        "category": "Engineering",
+        "question": "How do you calculate the efficiency of a heat engine?",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 16,
+        "category": "Engineering",
+        "question": "Describe the process of debugging and troubleshooting code.",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 17,
+        "category": "Engineering",
+        "question": "What is the difference between concurrency and parallelism?",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 18,
+        "category": "Engineering",
+        "question": "How do you calculate the efficiency of a heat engine?",
+        "difficulty": "Advanced",
+        "type": "Conceptual"
+    },
+    {
+        "id": 19,
+        "category": "Engineering",
+        "question": "Describe a project where you optimized an engineering process.",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 20,
+        "category": "Engineering",
+        "question": "Discuss the pros and cons of using microservices architecture.",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 21,
+        "category": "Engineering",
+        "question": "What are the key components of a bridge design?",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 22,
+        "category": "Engineering",
+        "question": "How would you optimize the performance of a slow-running SQL query?",
+        "difficulty": "Beginner",
+        "type": "Technical"
+    },
+    {
+        "id": 23,
+        "category": "Engineering",
+        "question": "Explain the concept of design patterns and give examples of commonly used patterns.",
+        "difficulty": "Advanced",
+        "type": "Behavioral"
+    },
+    {
+        "id": 24,
+        "category": "Engineering",
+        "question": "Describe the principles of test-driven development (TDD).",
+        "difficulty": "Intermediate",
+        "type": "Situational"
+    },
+    {
+        "id": 25,
+        "category": "Engineering",
+        "question": "Explain a binary tree data structure and perform various operations on it.",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 26,
+        "category": "Engineering",
+        "question": "Discuss the advantages and disadvantages of using Agile methodology in software development.",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 27,
+        "category": "Engineering",
+        "question": "Explain the concept of multithreading and how it differs from multiprocessing.",
+        "difficulty": "Intermediate",
+        "type": "Situational"
+    },
+    {
+        "id": 28,
+        "category": "Engineering",
+        "question": "Discuss the principles of object-oriented design (OOD) and how they influence software development.",
+        "difficulty": "Intermediate",
+        "type": "Technical"
+    },
+    {
+        "id": 29,
+        "category": "Engineering",
+        "question": "Discuss the importance of code reviews in software development and how they contribute to code quality.",
+        "difficulty": "Advanced",
+        "type": "Conceptual"
+    },
+    {
+        "id": 30,
+        "category": "Engineering",
+        "question": "Explain the concept of dependency injection and its benefits in software design.",
+        "difficulty": "Intermediate",
+        "type": "Conceptual"
+    },
+    {
+        "id": 31,
+        "category": "Engineering",
+        "question": "Discuss the principles of software architecture and their importance in designing scalable and maintainable systems.",
+        "difficulty": "Advanced",
+        "type": "Conceptual"
+    },
+    {
+        "id": 32,
+        "category": "Engineering",
+        "question": "Discuss the advantages and disadvantages of using microservices architecture over monolithic architecture.",
+        "difficulty": "Advanced",
+        "type": "Behavioral"
+    },
+    {
+        "id": 33,
+        "category": "Engineering",
+        "question": "Discuss the CAP theorem and its implications for distributed systems.",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 34,
+        "category": "Engineering",
+        "question": "Discuss the role of design patterns in software architecture and provide examples of commonly used design patterns in distributed systems.",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 35,
+        "category": "Engineering",
+        "question": "Discuss the principles of continuous integration (CI) and continuous delivery (CD) in DevOps practices.",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 36,
+        "category": "Engineering",
+        "question": "Discuss the challenges and strategies for managing state in distributed systems.",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 37,
+        "category": "Engineering",
+        "question": "Discuss the principles and benefits of containerization and container orchestration in microservices architectures.",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 38,
+        "category": "Engineering",
+        "question": "What are the Different Types of Software Testing?",
+        "difficulty": "Advanced",
+        "type": "Situational"
+    },
+    {
+        "id": 39,
+        "category": "Engineering",
+        "question": "What are the Different Phases of the Software Testing Life Cycle?",
+        "difficulty": "Advanced",
+        "type": "Conceptual"
+    },
+    {
+        "id": 40,
+        "category": "Engineering",
+        "question": "What do you mean by Quality Assurance(QA)?",
+        "difficulty": "Intermediate",
+        "type": "Technical"
+    },
+    {
+        "id": 41,
+        "category": "Engineering",
+        "question": "What does a test plan consist of?",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 42,
+        "category": "Engineering",
+        "question": "Explain the Waterfall and Agile Models.",
+        "difficulty": "Intermediate",
+        "type": "Situational"
+    },
+    {
+        "id": 43,
+        "category": "Engineering",
+        "question": "What is Software Configuration Management?",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 44,
+        "category": "Engineering",
+        "question": "WWhat is a Cause-effect Graph?",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 45,
+        "category": "Engineering",
+        "question": "What is a bug report?",
+        "difficulty": "Intermediate",
+        "type": "Technical"
+    },
+    {
+        "id": 46,
+        "category": "Engineering",
+        "question": "What are the different types of testing metrics?",
+        "difficulty": "Beginner",
+        "type": "Behavioral"
+    },
+    {
+        "id": 47,
+        "category": "Engineering",
+        "question": "What is the difference between verification and validation in Testing?",
+        "difficulty": "Beginner",
+        "type": "Situational"
+    },
+    {
+        "id": 48,
+        "category": "Engineering",
+        "question": "What is the difference between Bug, Defect, Error, Fault, and Failure?",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    },
+    {
+        "id": 49,
+        "category": "Engineering",
+        "question": "What Qualities should a Software Developer Possess?",
+        "difficulty": "Advanced",
+        "type": "Technical"
+    },
+    {
+        "id": 50,
+        "category": "Engineering",
+        "question": "Explain the Bug Life Cycle.",
+        "difficulty": "Beginner",
+        "type": "Conceptual"
+    }
+]
