@@ -1,47 +1,135 @@
+.code-editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+/* Change the text cursor (caret) color to white */
+/* Ensure the text editor cursor is white */
+.code-textarea {
+  caret-color: white; /* Sets the color of the cursor (caret) to white */
+  background-color: #2d2d2d; /* Example dark background for editor */
+  color: white; /* White text color for the editor */
+  font-family: 'Courier New', monospace; /* Monospace font for the editor */
+  padding: 10px; /* Some padding for the text area */
+  border: none; /* No border */
+  width: 100%;
+  height: 100%;
+  outline: none; /* Remove outline */
+  resize: none; /* Disable resizing */
+}
+
+.code-textarea:focus {
+  border: 1px solid #3498db; /* Optional: border when the textarea is focused */
+}
 
 
-/* Ensure root elements occupy the full screen */
-html, body {
-    height: 100%; /* Full height for the entire document */
-    margin: 0; /* Remove any default margins */
-    padding: 0; /* Remove any default padding */
-    box-sizing: border-box; /* Include padding and border in size calculations */
-    overflow: hidden; /* Prevent overflow causing white space */
-  }
-  
-  .code-editor-wrapper {
-    display: flex; /* Use flexbox to align children side by side */
-    width: 100vw; /* Full width of the screen */
-    height: 80vh; /* Full height of the screen */
-    margin: 0; /* Remove extra margins */
-    padding: 0; /* Remove padding */
-    box-sizing: border-box;
-    overflow: hidden; /* Prevent scrollbars from extra space */
-  }
-  
-  .code-editor-container {
-    width: 50%;
-    height: 80vh; /* Full height */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .language-selector {
-    margin: 0; /* Remove margin */
-    padding: 10px; /* Optional padding for better spacing */
-  }
-  
-  button, .editor-output {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Adjust the output section */
-  .editor-output {
-    flex: 1; /* Allow it to grow to fill available space */
-    max-height: 50%; /* Restrict the height if it gets too large */
-    overflow-y: auto; /* Add scrolling if content overflows */
-  }
-  
+.code-editor-header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+  background: #333;
+  color: #fff;
+}
+
+.code-editor-container {
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+}
+
+.code-input {
+  flex: 1;
+  position: relative;
+  background: #1e1e1e;
+  color: #ffffff;
+  padding: 10px;
+}
+
+.code-output {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  padding: 10px;
+  font-size: 14px;
+  font-family: monospace;
+  line-height: 1.5;
+  color: #ffffff;
+  background: #1e1e1e;
+  white-space: pre-wrap;
+}
+
+textarea.code-textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  opacity: 0;
+  z-index: 1;
+  font-size: 14px;
+  font-family: monospace;
+  line-height: 1.5;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  color: transparent;
+  caret-color: white;
+}
+
+.output-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: #2d2d2d;
+  color: #ffffff;
+}
+
+.run-button {
+  background: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.run-button:hover {
+  background: #45a049;
+}
+
+.output-display {
+  flex: 1;
+  background: #1e1e1e;
+  color: #ffffff;
+  padding: 10px;
+  border: 1px solid #333;
+  overflow-y: auto;
+  font-family: monospace;
+}
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.reset-button {
+  padding: 10px 20px;
+  background-color: #f44336; /* Red color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reset-button:hover {
+  background-color: #d32f2f;
+}
+

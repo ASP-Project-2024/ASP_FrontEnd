@@ -16,7 +16,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch('http://localhost:2000/auth/profile', {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/profile`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -53,7 +53,7 @@ function Profile() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch('http://localhost:2000/auth/logout', {
+          const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import "./LanguageSelector.css"; // Assuming this file exists for styling
 import { LANGUAGE_VERSIONS } from "../constants";
@@ -32,5 +33,19 @@ const LanguageSelector = ({ language, onSelect }) => {
         </div>
     );
 };
+=======
+const LanguageSelector = ({ options, selected, onSelect }) => (
+    <select
+        value={selected.value}
+        onChange={(e) => onSelect(options.find((opt) => opt.value === e.target.value))}
+    >
+        {options.map((option) => (
+            <option key={option.value} value={option.value}>
+                {option.label}
+            </option>
+        ))}
+    </select>
+);
+>>>>>>> abc7a35846dc1d2b5b4c5e54c638d6c494ccf59f
 
 export default LanguageSelector;
