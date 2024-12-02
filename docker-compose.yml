@@ -1,0 +1,10 @@
+services:
+  frontend:
+    image: asp_project/frontend-dev
+    build: .
+    environment:
+      REACT_APP_SERVER_URL: http://localhost:4000
+    command:
+      - start
+    ports:
+      - 3000:3000
