@@ -3,7 +3,6 @@ import './Record.css';
 
 function Record() {
   const [isRecording, setIsRecording] = useState(false);
-  const [transcribedText, setTranscribedText] = useState('');
   const [isSpeechRecognitionSupported, setIsSpeechRecognitionSupported] = useState(true);
   const [waveformVisible, setWaveformVisible] = useState(false);
   const mediaRecorderRef = useRef(null);
@@ -56,23 +55,8 @@ function Record() {
         recognition.continuous = true;
         recognition.interimResults = true;
 
-        let finalTranscript = ''; // Store final results
-
         recognition.onresult = (event) => {
-          let interimTranscript = '';
-
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript;
-
-            if (event.results[i].isFinal) {
-              finalTranscript += transcript; // Append final results
-            } else {
-              interimTranscript += transcript; // Collect interim results
-            }
-          }
-
-          // Update the state with combined final and interim transcriptions
-          setTranscribedText(finalTranscript + interimTranscript);
+          console.log('Speech recognized:', event.results[0][0].transcript);
         };
 
         recognition.onerror = (error) => {
@@ -91,7 +75,7 @@ function Record() {
 
     mediaRecorderRef.current.stop();
     setIsRecording(false);
-    setWaveformVisible(false); // Hide waveform when recording stops
+    setWaveformVisible(false);
 
     if (audioContextRef.current) {
       audioContextRef.current.close();
@@ -104,21 +88,74 @@ function Record() {
     }
 
     mediaRecorderRef.current.onstop = () => {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
-      audioChunks.current = [];
+      if (audioChunks.current.length > 0) {
+        const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+        audioChunks.current = [];
 
-      // Send the transcription to the backend
-      if (transcribedText.trim()) {
-        sendTextToBackend(transcribedText.trim());
+        // Send the audio file to the backend
+        sendAudioToBackend(audioBlob);
       } else {
-        console.warn('No transcription available.');
+        console.error('No audio data available to send');
       }
     };
   };
 
+  const sendAudioToBackend = async (audioBlob) => {
+    // Convert the audioBlob to Base64
+    const base64Audio = await convertBlobToBase64(audioBlob);
+  
+    console.log("Sending audio to backend...");
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/audio/upload-audio`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Send JSON content type
+        },
+        body: JSON.stringify({ audio: base64Audio }), // Send audio as JSON
+        credentials: 'include', // Include cookies if necessary
+      });
+  
+      if (!response.ok) {
+        console.error('Failed to send audio to backend', response.statusText);
+        return;
+      }
+  
+      const responseData = await response.json();
+      console.log('Backend Response:', responseData);
+    } catch (error) {
+      console.error('Error sending audio to backend:', error);
+    }
+  };
+  
+  // Function to convert Blob to Base64
+  const convertBlobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(',')[1]); // Get Base64 part of the result
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+  
+  
+
   const drawWaveform = () => {
+    if (!waveformVisible) return;
+
     const canvas = document.getElementById('waveform');
+    
+    if (!canvas) {
+      console.error("Canvas element not found!");
+      return;
+    }
+
     const canvasContext = canvas.getContext('2d');
+    if (!canvasContext) {
+      console.error("Failed to get canvas context!");
+      return;
+    }
+
     const analyser = analyserRef.current;
 
     const render = () => {
@@ -159,27 +196,6 @@ function Record() {
     };
 
     render();
-  };
-
-  const sendTextToBackend = async (text) => {
-    console.log('Sending to backend:', text);
-    try {
-      const response = await fetch('http://localhost:2000/audio/upload-txt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paragraph: text }),
-      });
-
-      if (!response.ok) {
-        console.error('Failed to send text to backend');
-        return;
-      }
-
-      const responseData = await response.json();
-      console.log('Backend Response:', responseData);
-    } catch (error) {
-      console.error('Error sending text to backend:', error);
-    }
   };
 
   return (

@@ -19,8 +19,9 @@ function LoginSignup() {
   const navigate = useNavigate();
 
   const profile = async () => {
+    console.log(process.env.REACT_APP_GOOGLE_CLIENT_URL);
     try {
-      const response = await fetch('http://localhost:2000/auth/profile', {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/profile`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ function LoginSignup() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const endpoint = isLogin ? 'http://localhost:2000/auth/login' : 'http://localhost:2000/auth/signup';
+    const endpoint = isLogin ? `${process.env.REACT_APP_SERVER_URL}/auth/login` : `${process.env.REACT_APP_SERVER_URL}/auth/signup`;
     const bodyData = isLogin
       ? { emailid: formData.emailid, password: formData.password }
       : {
@@ -98,12 +99,21 @@ function LoginSignup() {
       });
       const data = await response.json();
       if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: isLogin ? 'Welcome Back!' : 'Account Created',
-          text: isLogin ? `Good to see you again!` : 'You can now log in with your new account.',
-          confirmButtonText: 'Continue',
-        }).then(() => navigate('/home'));
+        if (isLogin) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Welcome Back!',
+            text: `Good to see you again!`,
+            confirmButtonText: 'Continue',
+          }).then(() => navigate('/home'));
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Account Created',
+            text: 'You can now log in with your new account.',
+            confirmButtonText: 'OK',
+          }).then(() => setIsLogin(true));
+        }
       } else {
         Swal.fire({
           icon: 'error',
@@ -132,8 +142,8 @@ function LoginSignup() {
       const emailid = decoded.email;
 
       const endpoint = isLogin
-        ? 'http://localhost:2000/auth/google-login'
-        : 'http://localhost:2000/auth/google-signup';
+        ? `${process.env.REACT_APP_SERVER_URL}/auth/google-login`
+        : `${process.env.REACT_APP_SERVER_URL}/auth/google-signup`;
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -146,12 +156,21 @@ function LoginSignup() {
 
       const data = await response.json();
       if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Google Sign-In Successful',
-          text: `Welcome ${firstname}!`,
-          confirmButtonText: 'Continue',
-        }).then(() => navigate('/home'));
+        if (isLogin) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Google Sign-In Successful',
+            text: `Welcome ${firstname}!`,
+            confirmButtonText: 'Continue',
+          }).then(() => navigate('/home'));
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Google Sign-Up Successful',
+            text: 'You can now log in using Google.',
+            confirmButtonText: 'OK',
+          }).then(() => setIsLogin(true));
+        }
       } else {
         Swal.fire({
           icon: 'error',
@@ -171,7 +190,7 @@ function LoginSignup() {
   };
 
   return (
-    <GoogleOAuthProvider clientId="1075893040673-0ikvhs02rh87i359em7h3sggd79356he.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_URL}>
       <div className="container">
         <h1 className="title">InterviewPrep</h1>
         <div className="auth-container">
