@@ -23,16 +23,10 @@ const CODE_SNIPPETS = {
 
 
 const CodeEditor = () => {
-<<<<<<< HEAD
-    const editorRef = useRef();
-    const [value, setValue] = useState('');
-    const [language, setLanguage] = useState('java');
-=======
     const [code, setCode] = useState(CODE_SNIPPETS.python);
     const [output, setOutput] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState(LANGUAGE_OPTIONS[0]);
     const codeRef = useRef(null);
->>>>>>> abc7a35846dc1d2b5b4c5e54c638d6c494ccf59f
 
     // Apply syntax highlighting whenever code or language changes
     useEffect(() => {

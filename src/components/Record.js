@@ -202,24 +202,9 @@ function Record() {
     });
   };
   
-  
-
   const drawWaveform = () => {
-    if (!waveformVisible) return;
-
     const canvas = document.getElementById('waveform');
-    
-    if (!canvas) {
-      console.error("Canvas element not found!");
-      return;
-    }
-
     const canvasContext = canvas.getContext('2d');
-    if (!canvasContext) {
-      console.error("Failed to get canvas context!");
-      return;
-    }
-
     const analyser = analyserRef.current;
 
     const render = () => {
@@ -261,6 +246,16 @@ function Record() {
 
     render();
   };
+
+  const handleStartTestClick = () => {
+    setTestStarted(true); // Toggle test started state
+    setTextAreaVisible(true); // Show the text area
+  };
+
+  const handleEndTestClick = () => {
+    setTestStarted(false); // End the test
+    setTextAreaVisible(false); // Hide the text area
+  };
 
   return (
     <div className="record-container">
