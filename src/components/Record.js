@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import './Record.css';
 import questions from './questions.json';
 
@@ -9,6 +10,7 @@ function Record() {
   const [timer, setTimer] = useState(20); // Set timer to 20 seconds
   const [textAreaVisible, setTextAreaVisible] = useState(false); // State to control text area visibility
   const [testStarted, setTestStarted] = useState(false); // State to track if test has started
+  const [summaryVisible, setSummaryVisible] = useState(false); // State to control summary visibility
   const mediaRecorderRef = useRef(null);
   const audioChunks = useRef([]);
   const audioContextRef = useRef(null);
@@ -28,48 +30,28 @@ function Record() {
   }, [SpeechRecognition]);
 
   useEffect(() => {
-    // Set a random question from the imported JSON data
-    if (questions.length > 0) {
-      setRandomQuestion();
-    } else {
-      console.error('No questions found in the JSON file');
-    }
-  }, [])
+    setQuestion(questions[currentQuestionIndex]?.question || '');
+  }, [currentQuestionIndex, questions]);
+  
 
-  // Function to set a random question
   const setRandomQuestion = () => {
     const randomIndex = Math.floor(Math.random() * questions.length);
     setCurrentQuestionIndex(randomIndex);
     setQuestion(questions[randomIndex].question);
   };
 
-  // Function to handle getting a new random question
-  const handleGetNewRandomQuestion = () => {
-    setRandomQuestion();
-  };
-
-  useEffect(() => {
-    // Set the first question from the imported JSON data
-    if (questions.length > 0) {
-      setQuestion(questions[currentQuestionIndex].question);
-    } else {
-      console.error('No questions found in the JSON file');
-    }
-  }, [currentQuestionIndex]);
-
-  // Function to handle next question
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
   };
-
-  // Function to handle previous question
+  
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
+  
 
   useEffect(() => {
     let interval = null;
@@ -94,7 +76,6 @@ function Record() {
       mediaRecorderRef.current = new MediaRecorder(stream);
       audioContextRef.current = new AudioContext();
 
-      // Create an analyser node for waveform visualization
       const source = audioContextRef.current.createMediaStreamSource(stream);
       analyserRef.current = audioContextRef.current.createAnalyser();
       source.connect(analyserRef.current);
@@ -112,7 +93,6 @@ function Record() {
       setIsRecording(true);
       setTimer(20); // Reset the timer to 20 when recording starts
 
-      // Start Speech Recognition if supported
       if (recognition) {
         recognition.lang = 'en-US';
         recognition.continuous = true;
@@ -138,8 +118,7 @@ function Record() {
 
     mediaRecorderRef.current.stop();
     setIsRecording(false);
-    setWaveformVisible(false); // Hide waveform when recording stops
-    setTextAreaVisible(false); // Hide text area when recording stops
+    setWaveformVisible(false);
 
     if (audioContextRef.current) {
       audioContextRef.current.close();
@@ -156,7 +135,6 @@ function Record() {
         const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
         audioChunks.current = [];
 
-        // Send the audio file to the backend
         sendAudioToBackend(audioBlob);
       } else {
         console.error('No audio data available to send');
@@ -165,43 +143,62 @@ function Record() {
   };
 
   const sendAudioToBackend = async (audioBlob) => {
-    // Convert the audioBlob to Base64
     const base64Audio = await convertBlobToBase64(audioBlob);
-  
-    console.log("Sending audio to backend...");
-  
+
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/audio/upload-audio`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // Send JSON content type
-        },
-        body: JSON.stringify({ audio: base64Audio }), // Send audio as JSON
-        credentials: 'include', // Include cookies if necessary
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audio: base64Audio }),
+        credentials: 'include',
       });
-  
+
       if (!response.ok) {
-        console.error('Failed to send audio to backend', response.statusText);
+        Swal.fire({
+          icon: 'error',
+          title: 'Upload Failed',
+          text: 'Failed to send audio to backend. Please try again.',
+        });
         return;
       }
-  
+
       const responseData = await response.json();
-      console.log('Backend Response:', responseData);
+
+      if (responseData.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Audio Processed Successfully',
+          text: responseData.message,
+        });
+
+        setQuestion(responseData.summary); // Display summary
+        setTextAreaVisible(false);
+        setSummaryVisible(true); // Show summary
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Processing Failed',
+          text: 'The server failed to process the audio.',
+        });
+      }
     } catch (error) {
-      console.error('Error sending audio to backend:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while sending audio. Please try again.',
+      });
     }
   };
-  
-  // Function to convert Blob to Base64
+
   const convertBlobToBase64 = (blob) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result.split(',')[1]); // Get Base64 part of the result
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
   };
-  
+
   const drawWaveform = () => {
     const canvas = document.getElementById('waveform');
     const canvasContext = canvas.getContext('2d');
@@ -214,12 +211,12 @@ function Record() {
       const dataArray = new Uint8Array(bufferLength);
       analyser.getByteTimeDomainData(dataArray);
 
-      canvasContext.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-      canvasContext.fillStyle = '#1a1a1a'; // Dark background
+      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+      canvasContext.fillStyle = '#1a1a1a';
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
       canvasContext.lineWidth = 2;
-      canvasContext.strokeStyle = '#4caf50'; // Bright green waveform
+      canvasContext.strokeStyle = '#4caf50';
       canvasContext.beginPath();
 
       const sliceWidth = (canvas.width * 1.0) / bufferLength;
@@ -248,42 +245,43 @@ function Record() {
   };
 
   const handleStartTestClick = () => {
-    setTestStarted(true); // Toggle test started state
-    setTextAreaVisible(true); // Show the text area
+    setTestStarted(true);
+    setTextAreaVisible(true);
   };
 
   const handleEndTestClick = () => {
-    setTestStarted(false); // End the test
-    setTextAreaVisible(false); // Hide the text area
-  };
+    setTestStarted(false);
+    setTextAreaVisible(false);
+    setSummaryVisible(false);
+  };
 
   return (
     <div className="record-container">
       {waveformVisible && <canvas id="waveform" width="600" height="200"></canvas>}
 
-      {/* Start Test Button */}
       {!testStarted && (
         <div className="round-button-container">
           <button onClick={handleStartTestClick} className="round-btn">Start Test</button>
         </div>
       )}
 
-      {/* End Test Button */}
       {testStarted && (
         <div className="round-button-container">
           <button onClick={handleEndTestClick} className="round-btn">End Test</button>
         </div>
       )}
 
-      {/* Text Area */}
+      {summaryVisible && (
+        <div className="summary-container">
+          <h2>Audio Summary</h2>
+          <p>{question}</p>
+        </div>
+      )}
+
       {textAreaVisible && (
         <div className="text-area-wrapper">
           <button className="arrow-btn left" onClick={handlePreviousQuestion}>{'<'}</button>
-          <textarea
-            className="text-area"
-            readOnly
-            value={question}
-          ></textarea>
+          <textarea className="text-area" readOnly value={question}></textarea>
           <button className="arrow-btn right" onClick={handleNextQuestion}>{'>'}</button>
         </div>
       )}
