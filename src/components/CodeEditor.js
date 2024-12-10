@@ -48,7 +48,7 @@ const CodeEditor = () => {
         };
     
         try {
-            const response = await fetch("http://localhost:4000/code/execute-code", {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/code/execute-code`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
